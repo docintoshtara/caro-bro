@@ -4,9 +4,20 @@ const add = async(req, res, next) => {
     const postData = req.body;
     let suger;
     try {
-        suger = new Suger(postData);
+        const data = await Suger.find({ email: postData.email });
+        if (data.length > 0) {
+            await Suger.findOneAndUpdate({ email: postData.email }, {
+                $set: postData
+            });
+            suger = data;
 
-        suger = await suger.save();
+        } else {
+            suger = new Suger(postData);
+
+            suger = await suger.save();
+        }
+
+
     } catch (err) {
         console.log(err);
         return next();

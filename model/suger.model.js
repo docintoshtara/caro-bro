@@ -13,6 +13,22 @@ const suger = new Schema({
     mm: {
         type: String,
         required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        // match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+    },
+    mobile: {
+        type: String,
+        required: true,
+        unique: true,
+        // match: /^(\+\d{1,3}[- ]?)?\d{10}$/
+    },
+    onoff: {
+        default: '1',
+        type: String
     }
 }, { timestamps: true })
 
