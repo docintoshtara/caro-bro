@@ -42,16 +42,12 @@ const get = async(req, res, next) => {
 };
 
 const edit = async(req, res, next) => {
-    suger = await Suger.findById(req.params.id);
+    const suger = await Suger.find({ mobile: req.params.id });
     if (!suger) {
-        return res.status(404).send('something went wrong');
-
+        return res.status(404).send('No user found');
     }
-    const postData = req.body;
-    if (req.file) {
-        postData['image'] = req.file.filename;
-    }
-    await Suger.findOneAndUpdate({ _id: req.params.id }, {
+    const postData = { 'onoff': 1 };
+    await Suger.findOneAndUpdate({ mobile: req.params.id }, {
         $set: postData
     })
     return res.status(200).send('Success');
