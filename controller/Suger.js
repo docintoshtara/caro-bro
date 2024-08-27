@@ -46,7 +46,7 @@ const edit = async(req, res, next) => {
     if (!suger) {
         return res.status(404).send('No user found');
     }
-    const postData = { 'onoff': 1 };
+    const postData = { 'onoff': 0 };
     await Suger.findOneAndUpdate({ mobile: req.params.id }, {
         $set: postData
     })
