@@ -6,8 +6,9 @@ const add = async(req, res, next) => {
     try {
         const data = await Suger.find({ email: postData.email });
         if (data.length > 0) {
-            await Suger.findOneAndUpdate({ email: postData.email, onoff: 1 }, {
-                $set: postData
+            const PostData = { 'onoff': 1 };
+            await Suger.findOneAndUpdate({ email: postData.email }, {
+                $set: PostData
             });
             suger = data;
 
