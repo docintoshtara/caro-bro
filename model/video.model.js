@@ -14,10 +14,16 @@ const video = new Schema({
         type: String,
         required: true,
     },
+    timemillisecond:
+    {
+         type: String,
+        required: true,
+    },
     status: {
         default: '1',
         type: String
     }
 }, { timestamps: true })
+
 
 module.exports = mongoose.model("video", video);
