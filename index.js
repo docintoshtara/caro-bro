@@ -1,12 +1,12 @@
-require('dotenv').config()
+require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const suger = require('./routes/suger.routes');
-const video = require('./routes/video.routes')
-var cors = require('cors')
+const video = require('./routes/video.routes');
+require('./db/db');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
-require('./db/db')
 
 const permissionsJustifications = [
     { permission: "activeTab", justification: "Required to interact with the currently active tab for displaying reminders or providing alerts based on user activity." },
@@ -19,17 +19,18 @@ const permissionsJustifications = [
     { permission: "single_purpose_description", justification: "Flo Pal helps users maintain healthy eye habits by providing periodic alarms and reminders for eye exercises and screen breaks." }
 ];
 
-app.use(express.urlencoded({
-    extended: true
-}))
+// Middleware
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
+
+// Routes
 app.use('/api/v1', suger);
 app.use('/api/v1', video);
 
-// API Endpoint to Display Justifications in Table Format
+// API Endpoint to Display Privacy Policy
 app.get("/privacy", (req, res) => {
-    let html = `<!DOCTYPE html>
+    res.send(`<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -70,7 +71,7 @@ app.get("/privacy", (req, res) => {
 <ul>
 <li><strong>Personal Information:</strong> We do not collect any personally identifiable information.</li>
 <li><strong>Non-Personal Information:</strong> We may collect anonymous usage data, such as extension settings and interactions.</li>
-<li><strong>Permissions:</strong> The extension may request certain permissions (such as `activeTab`, `storage`, `alarms`, `contextMenus`, and `tabs`) to function correctly, but we do not misuse these permissions.</li>
+<li><strong>Permissions:</strong> The extension may request certain permissions (such as <code>activeTab</code>, <code>storage</code>, <code>alarms</code>, <code>contextMenus</code>, and <code>tabs</code>) to function correctly, but we do not misuse these permissions.</li>
 </ul>
 <h2>3. How We Use the Information</h2>
 <p>We use the collected information solely for the following purposes:</p>
@@ -86,16 +87,13 @@ app.get("/privacy", (req, res) => {
 <h2>6. Changes to This Policy</h2>
 <p>We may update this Privacy Policy periodically. Users will be notified of any significant changes through the Chrome Web Store or within the extension itself.</p>
 <h2>7. Contact Us</h2>
-<p>If you have any questions regarding this Privacy Policy, you can contact us at: <strong>flopalextention@gmail.com</strong></p>
+<p>If you have any questions regarding this Privacy Policy, you can contact us at: <strong>flopalextension@gmail.com</strong></p>
 </div>
 </body>
-</html>`;
-
-    res.send(html);
+</html>`);
 });
 
-
-
+// Start the server
 app.listen(PORT, () => {
-    console.log(`connected on ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
